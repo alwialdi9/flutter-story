@@ -45,6 +45,11 @@ dependencies:
   flutter_bloc: ^8.1.4
   shared_preferences: ^2.2.2
   material_design_icons_flutter: ^7.0.7296
+  image_picker: any
+  image_picker_windows: ^0.2.1+1
+  flutter_image_compress: ^2.2.0
+  camera: ^0.10.5+9
+  image: ^4.1.7
 
 dev_dependencies:
   flutter_test:

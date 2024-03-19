@@ -108,7 +108,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           nameController.text,
                           emailController.text,
                           passwordController.text);
-                          
+
                       if (register.error!) {
                         Get.snackbar("", "",
                             backgroundColor: "D9435E".toColor(),

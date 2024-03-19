@@ -5,9 +5,5 @@ class ApiReturnValue<T> {
   final String? message;
   final bool? error;
 
-  ApiReturnValue(
-    {this.value, 
-    this.message, 
-    this.error}
-  );
+  ApiReturnValue({this.value, this.message, this.error});
 }

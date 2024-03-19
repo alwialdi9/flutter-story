@@ -1,7 +1,8 @@
 part of 'widgets.dart';
 
 class CustomBottomNavbar extends StatelessWidget {
-  const CustomBottomNavbar({super.key, required this.selectedIndex, required this.onTap});
+  const CustomBottomNavbar(
+      {super.key, required this.selectedIndex, required this.onTap});
   final int selectedIndex;
   final Function(int index) onTap;
 
@@ -19,25 +20,30 @@ class CustomBottomNavbar extends StatelessWidget {
             onTap: () {
               if (onTap != null) {
                 onTap(0);
+                context.read<StoryCubit>().resetStories();
               }
             },
             child: SizedBox(
               width: 36,
               height: 36,
-              child: selectedIndex == 0 ? const LineIcon.home() : const Icon(Icons.home),
+              child: selectedIndex == 0
+                  ? const LineIcon.home()
+                  : const Icon(Icons.home),
             ),
           ),
           GestureDetector(
             onTap: () {
               if (onTap != null) {
                 onTap(1);
+                context.read<ImageCubit>().resetImage();
               }
             },
             child: SizedBox(
-              width: 36,
-              height: 36,
-              child: selectedIndex == 1 ? const LineIcon.retroCamera() : const Icon(Icons.photo_camera)
-            ),
+                width: 36,
+                height: 36,
+                child: selectedIndex == 1
+                    ? const LineIcon.retroCamera()
+                    : const Icon(Icons.photo_camera)),
           ),
           GestureDetector(
             onTap: () {
@@ -46,10 +52,11 @@ class CustomBottomNavbar extends StatelessWidget {
               }
             },
             child: SizedBox(
-              width: 36,
-              height: 36,
-              child: selectedIndex == 2 ? const LineIcon.cog() : const Icon(Icons.settings_sharp)
-            ),
+                width: 36,
+                height: 36,
+                child: selectedIndex == 2
+                    ? const LineIcon.cog()
+                    : const Icon(Icons.settings_sharp)),
           )
         ],
       ),

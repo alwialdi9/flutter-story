@@ -13,21 +13,21 @@ class UserCubit extends Cubit<UserState> {
   Future<void> signIn(String email, String password) async {
     emit(UserLoading());
     try {
-      ApiReturnValue<Map<String, dynamic>> user = await UserService.signIn(email, password);
+      ApiReturnValue<Map<String, dynamic>> user =
+          await UserService.signIn(email, password);
 
       bool? error = user.error;
-      if(error!){
+      if (error!) {
         emit(UserFailedLogin(user.message!));
-      }else{
+      } else {
         if (user.value != null) {
           emit(UserSuccessLogin(token: user.value?['token']));
-        }else{
+        } else {
           emit(UserFailedLogin(user.message!));
         }
       }
-
     } catch (e) {
-      log("[${DateTime.now()}] Error : $e"); 
+      log("[${DateTime.now()}] Error : $e");
       emit(UserFailedLogin(e.toString()));
     }
   }

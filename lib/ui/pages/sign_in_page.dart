@@ -95,7 +95,7 @@ class _SignInPageState extends State<SignInPage> {
                         final token = state.token;
                         final prefs = await SharedPreferences.getInstance();
                         await prefs.setString('token', token);
-                        Get.toNamed('/home');
+                        Get.off(const MainPage());
                       } else {
                         Get.snackbar("", "",
                             backgroundColor: "D9435E".toColor(),

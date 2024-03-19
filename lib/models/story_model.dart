@@ -9,9 +9,17 @@ class Story extends Equatable {
   final double? lat;
   final double? lon;
 
-  Story({required this.id, required this.name, required this.description, required this.photoUrl, required this.createdAt, required this.lat, required this.lon});
+  Story(
+      {required this.id,
+      required this.name,
+      required this.description,
+      required this.photoUrl,
+      required this.createdAt,
+      required this.lat,
+      required this.lon});
   @override
-  List<Object?> get props => [id, name, description, photoUrl, createdAt, lat, lon];
+  List<Object?> get props =>
+      [id, name, description, photoUrl, createdAt, lat, lon];
 
   factory Story.fromJson(Map<String, dynamic> json) {
     return Story(
@@ -23,5 +31,4 @@ class Story extends Equatable {
         lon: json['lon'],
         createdAt: json['createdAt'] ?? '');
   }
-  
 }

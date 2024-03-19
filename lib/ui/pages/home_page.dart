@@ -9,8 +9,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final scrollController = ScrollController();
-  int page = 0;
-  int size = 10;
   bool isFetchMore = false;
   List<Story> stories = [];
 
@@ -18,12 +16,12 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     scrollController.addListener(_scrollListener);
-    fetchStories(page);
+    fetchStories();
   }
 
   @override
   void dispose() {
-    scrollController.removeListener(_scrollListener);
+    resetWidget();
     super.dispose();
   }
 
@@ -57,7 +55,7 @@ class _HomePageState extends State<HomePage> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        "Share ur Moment",
+                        'title'.tr,
                         style:
                             greyFontStyle.copyWith(fontWeight: FontWeight.w300),
                       ),
@@ -97,20 +95,31 @@ class _HomePageState extends State<HomePage> {
                   BlocBuilder<StoryCubit, StoryState>(builder: (_, state) {
                     if (state is StoryLoadedSuccess) {
                       List<Story> stories = state.props.map((obj) {
-                        if(obj is Story){
+                        if (obj is Story) {
                           return obj;
-                        }else{
+                        } else {
                           throw ArgumentError('Object is not a Story');
                         }
                       }).toList();
                       return Column(
                         children: stories
-                            .map((items) => isFetchMore ? Container(margin: const EdgeInsets.only(bottom: 30), child: loadingIndicator,) : GestureDetector(
-                                  onTap: () {
-                                    Get.to(() => CardDetail(story: stories[stories.indexOf(items)]));
-                                  },
-                                  child: CardStory(story: stories[stories.indexOf(items)]),
-                                ))
+                            .map((items) => isFetchMore
+                                ? Container(
+                                    margin: const EdgeInsets.only(bottom: 300),
+                                    child: const Skeleton(
+                                      width: double.infinity,
+                                      height: 300,
+                                    ),
+                                  )
+                                : GestureDetector(
+                                    onTap: () {
+                                      Get.to(() => DetailPage(
+                                          story:
+                                              stories[stories.indexOf(items)]));
+                                    },
+                                    child: CardStory(
+                                        story: stories[stories.indexOf(items)]),
+                                  ))
                             .toList(),
                       );
                     } else {
@@ -121,7 +130,7 @@ class _HomePageState extends State<HomePage> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                       Text(
-                                        "Ups, Sepertinya sedang ada kendala :(",
+                                        'title_error'.tr,
                                         style: blackFontStyle16,
                                         textAlign: TextAlign.center,
                                       ),
@@ -129,58 +138,44 @@ class _HomePageState extends State<HomePage> {
                                         height: 20,
                                       ),
                                       Text(
-                                        "Tunggu ya, kami sedang berusaha untuk memperbaikinya",
+                                        'subtitle_error'.tr,
                                         style: greyFontStyle,
                                         textAlign: TextAlign.center,
                                       )
                                     ]));
                     }
-                  })
+                  }),
                 ],
               ),
-            )
+            ),
+            const SizedBox(
+              height: 10,
+            ),
           ],
         )
       ],
     );
   }
 
-  void fetchStories(int page) {
-    context.read<StoryCubit>().getStories(page: page);
+  void fetchStories() {
+    context.read<StoryCubit>().getStories();
   }
 
   void _scrollListener() {
-    if(scrollController.offset == scrollController.position.maxScrollExtent){
+    if (scrollController.offset == scrollController.position.maxScrollExtent) {
       setState(() {
         isFetchMore = true;
       });
-      fetchStories(page++);
+      fetchStories();
       setState(() {
         isFetchMore = false;
       });
     }
-    log("[${DateTime.now()}] Scroll called");
+    // log("[${DateTime.now()}] Scroll called");
   }
-}
 
-class Skeleton extends StatelessWidget {
-  const Skeleton({
-    super.key,
-    this.height,
-    this.width,
-  });
-
-  final double? height, width;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: height,
-      width: width,
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.04),
-          borderRadius: const BorderRadius.all(Radius.circular(16))),
-    );
+  void resetWidget() {
+    scrollController.removeListener(_scrollListener);
+    stories = [];
   }
 }

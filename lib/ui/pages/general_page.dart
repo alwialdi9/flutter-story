@@ -39,12 +39,12 @@ class GeneralPage extends StatelessWidget {
                       children: [
                         onBackButtonPressed != null
                             ? GestureDetector(
-                              onTap: () {
-                                if (onBackButtonPressed != null) {
-                                  onBackButtonPressed!();
-                                }
-                              },
-                              child: Container(
+                                onTap: () {
+                                  if (onBackButtonPressed != null) {
+                                    onBackButtonPressed!();
+                                  }
+                                },
+                                child: Container(
                                   width: defaultMargin,
                                   height: defaultMargin,
                                   margin: const EdgeInsets.only(right: 26),
@@ -53,7 +53,7 @@ class GeneralPage extends StatelessWidget {
                                           image: AssetImage(
                                               'assets/back_arrow.png'))),
                                 ),
-                            )
+                              )
                             : const SizedBox(),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +77,7 @@ class GeneralPage extends StatelessWidget {
                     width: double.infinity,
                     color: "FAFAFC".toColor(),
                   ),
-                  child ?? SizedBox()
+                  child ?? const SizedBox()
                 ],
               ),
             ],

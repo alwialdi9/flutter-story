@@ -9,36 +9,44 @@ part 'story_state.dart';
 
 class StoryCubit extends Cubit<StoryState> {
   StoryCubit() : super(StoryInitial());
+  int? page = 1;
+  int size = 10;
+  List<Story> stories = [];
 
-  Future<void> getStories(
-      {int page = 0, int size = 10, bool location = false}) async {
-    List<Object> existingData = state.props;
-    if(page == 0){
-      emit(StoryInitial());
-    }
+  Future<void> getStories() async {
+    // emit(StoryInitial());
     try {
-      ApiReturnValue<List<Story>> stories =
-          await StoryServices.getAllStories(page, size, location);
+      if (page != null) {
+        ApiReturnValue<List<Story>> result =
+            await StoryServices.getAllStories(page, size, true);
 
-      bool? error = stories.error;
+        bool? error = result.error;
 
-      if (error!) {
-        emit(StoryLoadedFailed(stories.message!));
-      }
-
-      if (stories.value != null) {
-        if (page > 0) {
-          List<Object> updatedStories = existingData..addAll(stories.value!);
-          emit(StoryLoadedSuccess(updatedStories));
+        if (error!) {
+          emit(StoryLoadedFailed(result.message!));
         } else {
-          emit(StoryLoadedSuccess(stories.value!));
+          if (result.value != null) {
+            stories.addAll(result.value!);
+            if (result.value!.length < size) {
+              page = null;
+            } else {
+              page = page! + 1;
+            }
+            emit(StoryLoadedSuccess(List.from(stories)));
+          } else {
+            emit(StoryLoadedFailed(result.message!));
+          }
         }
-      } else {
-        emit(StoryLoadedFailed(stories.message!));
       }
     } catch (e) {
       log("[${DateTime.now()}] Error : $e");
       emit(StoryLoadedFailed(e.toString()));
     }
+  }
+
+  void resetStories() {
+    emit(StoryInitial());
+    stories = [];
+    page = 0;
   }
 }

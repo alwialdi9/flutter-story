@@ -19,34 +19,34 @@ class _MainPageState extends State<MainPage> {
           Container(
             color: Colors.white,
           ),
-          SafeArea(child: 
-            Container(
-              color: 'FAFAFC'.toColor(),
-            )
-          ),
-          SafeArea(child: 
-            PageView(
-              controller: pageController,
-              onPageChanged: (value) {
-                setState(() {
-                  selectedPage = value;
-                });
-              },
-              children: const [
-                HomePage(),
-                Center(child: Icon(Icons.add_a_photo_outlined),),
-                Center(child: Icon(Icons.settings_sharp),)
-              ],
-            )
-          ),
+          SafeArea(
+              child: Container(
+            color: 'FAFAFC'.toColor(),
+          )),
+          SafeArea(
+              child: PageView(
+            controller: pageController,
+            onPageChanged: (value) {
+              setState(() {
+                selectedPage = value;
+              });
+            },
+            children: const [
+              HomePage(),
+              PostStoryPages(),
+              SettingsPage(),
+            ],
+          )),
           Align(
             alignment: Alignment.bottomCenter,
-            child: CustomBottomNavbar(selectedIndex: selectedPage, onTap: (index) {
-              setState(() {
-                selectedPage = index;
-              });
-              pageController.jumpToPage(selectedPage);
-            }),
+            child: CustomBottomNavbar(
+                selectedIndex: selectedPage,
+                onTap: (index) {
+                  setState(() {
+                    selectedPage = index;
+                  });
+                  pageController.jumpToPage(selectedPage);
+                }),
           )
         ],
       ),

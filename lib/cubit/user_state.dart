@@ -16,6 +16,7 @@ final class UserSuccessLogin extends UserState {
   @override
   List<Object> get props => [token];
 }
+
 final class UserFailedLogin extends UserState {
   final String message;
   const UserFailedLogin(this.message);
@@ -23,4 +24,5 @@ final class UserFailedLogin extends UserState {
   @override
   List<Object> get props => [message];
 }
+
 final class UserLoading extends UserState {}
