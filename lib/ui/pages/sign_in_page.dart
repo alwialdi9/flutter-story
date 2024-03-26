@@ -92,10 +92,14 @@ class _SignInPageState extends State<SignInPage> {
                       UserState state = context.read<UserCubit>().state;
 
                       if (state is UserSuccessLogin) {
-                        final token = state.token;
                         final prefs = await SharedPreferences.getInstance();
-                        await prefs.setString('token', token);
-                        Get.off(const MainPage());
+                        await prefs.setString('token', state.token);
+                        UserService().setLogin(true);
+                        setState(() {
+                          context.read<StoryCubit>().getStories();
+                          isLoading = false;
+                        });
+                        Get.rootDelegate.offNamed('/');
                       } else {
                         Get.snackbar("", "",
                             backgroundColor: "D9435E".toColor(),
@@ -136,7 +140,7 @@ class _SignInPageState extends State<SignInPage> {
             margin: const EdgeInsets.symmetric(horizontal: defaultMargin),
             child: ElevatedButton(
               onPressed: () {
-                Get.toNamed('/signup');
+                Get.rootDelegate.toNamed('/signup');
               },
               style: ElevatedButton.styleFrom(
                   elevation: 0,

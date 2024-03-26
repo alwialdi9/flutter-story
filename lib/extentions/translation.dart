@@ -11,7 +11,10 @@ class Messages extends Translations {
           'subtitle_setting': 'Change languange, Enable for ID',
           'post_btn': 'Post Image',
           'title_post': 'Post ur Moment',
-          'logout': 'Logout'
+          'logout': 'Logout',
+          'hint_desc': 'Description',
+          'btn_gallery': 'Gallery',
+          'btn_camera': 'Camera'
         },
         'id_ID': {
           'title': 'Bagikan momen kamu',
@@ -22,7 +25,10 @@ class Messages extends Translations {
           'subtitle_setting': 'Ubah bahasa, Aktif untuk ID',
           'post_btn': 'Unggah foto',
           'title_post': 'Unggah Momen kamu',
-          'logout': 'Keluar'
+          'logout': 'Keluar',
+          'hint_desc': 'Deskripsi',
+          'btn_gallery': 'Galeri',
+          'btn_camera': 'Kamera'
         }
       };
 }

@@ -146,8 +146,9 @@ class _SignUpPageState extends State<SignUpPage> {
                                     GoogleFonts.poppins(color: Colors.white)));
                         setState(() {
                           isLoading = false;
+                          context.read<StoryCubit>().getStories();
                         });
-                        Get.toNamed('/');
+                        Get.rootDelegate.toNamed('/signin');
                       }
                     },
                     style: ElevatedButton.styleFrom(
@@ -167,8 +168,11 @@ class _SignUpPageState extends State<SignUpPage> {
             margin: const EdgeInsets.symmetric(horizontal: defaultMargin),
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 Get.back();
+                final prefs = await SharedPreferences.getInstance();
+                String token = prefs.getString('token') ?? '';
+                print('Session login : $token');
               },
               style: ElevatedButton.styleFrom(
                   elevation: 0,

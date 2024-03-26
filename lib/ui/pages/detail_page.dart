@@ -1,12 +1,11 @@
 part of 'pages.dart';
 
 class DetailPage extends StatelessWidget {
-  const DetailPage({super.key, required this.story});
-
-  final Story story;
+  const DetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final Story story = Get.rootDelegate.arguments();
     return Scaffold(
       body: Stack(
         children: [
@@ -48,7 +47,10 @@ class DetailPage extends StatelessWidget {
                               Text(story.name,
                                   style: blackFontStyle14.copyWith(
                                       fontWeight: FontWeight.w600)),
-                              Text(story.createdAt, style: greyFontStyle)
+                              Text(
+                                  formatStringDate(story.createdAt,
+                                      'EEE, dd MMMM yyyy h:mm a'),
+                                  style: greyFontStyle)
                             ],
                           )
                         ],
@@ -87,7 +89,7 @@ class DetailPage extends StatelessWidget {
                             )
                           ])),
                   const SizedBox(height: 10),
-                  story.lat == null || story.lon == null
+                  story.lat != null || story.lon != null
                       ? Text("${story.lat}, ${story.lon}",
                           style: greyFontStyle.copyWith(fontSize: 12))
                       : const Text('')

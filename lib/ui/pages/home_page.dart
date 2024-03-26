@@ -86,12 +86,6 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Row(
-                  //   children: [
-                  //     Skeleton(height: 300, width: 344,),
-                  //   ],
-                  // ),
-                  // CardDetail(),
                   BlocBuilder<StoryCubit, StoryState>(builder: (_, state) {
                     if (state is StoryLoadedSuccess) {
                       List<Story> stories = state.props.map((obj) {
@@ -113,9 +107,10 @@ class _HomePageState extends State<HomePage> {
                                   )
                                 : GestureDetector(
                                     onTap: () {
-                                      Get.to(() => DetailPage(
-                                          story:
-                                              stories[stories.indexOf(items)]));
+                                      Get.rootDelegate.toNamed('/detail_story', arguments: items);
+                                      // Get.to(() => DetailPage(
+                                      //     story:
+                                      //         stories[stories.indexOf(items)]));
                                     },
                                     child: CardStory(
                                         story: stories[stories.indexOf(items)]),
@@ -171,7 +166,6 @@ class _HomePageState extends State<HomePage> {
         isFetchMore = false;
       });
     }
-    // log("[${DateTime.now()}] Scroll called");
   }
 
   void resetWidget() {

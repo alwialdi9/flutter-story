@@ -75,7 +75,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   onPressed: () async {
                     final prefs = await SharedPreferences.getInstance();
                     prefs.clear();
-                    Get.toNamed('/');
+                    UserService().setLogin(false);
+                    Get.rootDelegate.offNamed('/signin');
                   },
                   child: Text('logout'.tr)),
             )

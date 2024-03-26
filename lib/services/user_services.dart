@@ -1,6 +1,15 @@
 part of 'services.dart';
 
 class UserService {
+  late bool _isAuthenticated;
+
+  UserService() {
+    _isAuthenticated =
+        false; // Initialize the member variable in the constructor body
+  }
+
+  bool get isAuth => _isAuthenticated;
+
   static Future<ApiReturnValue<Map<String, dynamic>>> signIn(
       String email, String password) async {
     try {
@@ -52,5 +61,17 @@ class UserService {
       return ApiReturnValue(
           message: 'Error when register account', error: true);
     }
+  }
+
+  void checkLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    _isAuthenticated = prefs.getString('token') != '';
+  }
+
+  void setLogin(bool value) async {
+    // isAuthenticated = value;
+    // final prefs = await SharedPreferences.getInstance();
+    _isAuthenticated = value;
+    // return prefs.getString('token') != null;
   }
 }

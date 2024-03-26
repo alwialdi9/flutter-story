@@ -12,6 +12,12 @@ class _MainPageState extends State<MainPage> {
   PageController pageController = PageController(initialPage: 0);
 
   @override
+  void initState() {
+    super.initState();
+    isLogin();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -33,7 +39,7 @@ class _MainPageState extends State<MainPage> {
             },
             children: const [
               HomePage(),
-              PostStoryPages(),
+              UploadPostPage(),
               SettingsPage(),
             ],
           )),
@@ -51,5 +57,12 @@ class _MainPageState extends State<MainPage> {
         ],
       ),
     );
+  }
+
+  void isLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('token') == '' || prefs.getString('token') == null) {
+      Get.rootDelegate.offAndToNamed('/signin');
+    }
   }
 }

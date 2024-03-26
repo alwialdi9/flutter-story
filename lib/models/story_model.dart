@@ -27,8 +27,8 @@ class Story extends Equatable {
         name: json['name'],
         description: json['description'],
         photoUrl: json['photoUrl'],
-        lat: json['lat'],
-        lon: json['lon'],
+        lat: (json['lat'] != null && json['lat'].runtimeType != double ? double.parse(json['lat']) : json['lat']),
+        lon: (json['lon'] != null && json['lon'].runtimeType != double ? double.parse(json['lon']) : json['lon']),
         createdAt: json['createdAt'] ?? '');
   }
 }
