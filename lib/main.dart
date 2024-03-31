@@ -1,10 +1,12 @@
 import 'package:asl/cubit/cubit.dart';
 import 'package:asl/extentions/translation.dart';
+import 'package:asl/flavor_config.dart';
 import 'package:asl/router/routes.dart';
 import 'package:asl/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -16,8 +18,9 @@ void main() async {
     UserService().setLogin(true);
   }
 
+  await GetStorage.init();
+
   runApp(MyApp(
-    // token: token,
     language: language,
   ));
 }
@@ -36,7 +39,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => ImageCubit()),
       ],
       child: GetMaterialApp.router(
-        title: 'Story App',
+        title: FlavorConfig.instance.values.titleApp,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

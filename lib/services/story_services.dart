@@ -43,7 +43,7 @@ class StoryServices {
   }
 
   static Future<ApiReturnValue> postImage(
-      List<int> bytes, String fileName, String description) async {
+      List<int> bytes, String fileName, String description, Map<String, double> location) async {
     try {
       final prefs = await SharedPreferences.getInstance();
 
@@ -52,7 +52,7 @@ class StoryServices {
 
       final multipartFile =
           http.MultipartFile.fromBytes("photo", bytes, filename: fileName);
-      final Map<String, String> fields = {"description": description};
+      Map<String, String> fields = {"description": description, 'lat': location['latitude'].toString(), 'lon': location['longitude'].toString()};
       final Map<String, String> headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ${prefs.getString('token')}'

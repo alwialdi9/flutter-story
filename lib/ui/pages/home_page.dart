@@ -108,9 +108,6 @@ class _HomePageState extends State<HomePage> {
                                 : GestureDetector(
                                     onTap: () {
                                       Get.rootDelegate.toNamed('/detail_story', arguments: items);
-                                      // Get.to(() => DetailPage(
-                                      //     story:
-                                      //         stories[stories.indexOf(items)]));
                                     },
                                     child: CardStory(
                                         story: stories[stories.indexOf(items)]),

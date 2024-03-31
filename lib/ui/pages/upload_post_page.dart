@@ -10,6 +10,12 @@ class UploadPostPage extends StatefulWidget {
 class _UploadPostPageState extends State<UploadPostPage> {
   TextEditingController descController = TextEditingController();
   bool isUpload = false;
+  Map<String, double>? pickLocation;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +104,15 @@ class _UploadPostPageState extends State<UploadPostPage> {
               ],
             ),
             const SizedBox(height: 10),
+            if (pickLocation != null)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "${'coordinate'.tr} : ${pickLocation!['latitude']}, ${pickLocation!['longitude']}",
+                  style: greyFontStyle,
+                ),
+              ),
+            const SizedBox(height: 10),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -107,7 +122,93 @@ class _UploadPostPageState extends State<UploadPostPage> {
                     child: Text('btn_gallery'.tr)),
                 ElevatedButton(
                     onPressed: () => _onCameraView(),
-                    child: Text('btn_camera'.tr))
+                    child: Text('btn_camera'.tr)),
+                ElevatedButton(
+                    onPressed: () async {
+                      if (FlavorConfig.instance.flavor.name == 'free') {
+                        Get.snackbar("", "",
+                            backgroundColor: "D9435E".toColor(),
+                            icon: Icon(
+                              MdiIcons.closeCircleOutline,
+                              color: Colors.white,
+                            ),
+                            titleText: Text(
+                              'select_location_cannot_used'.tr,
+                              style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            messageText: Text('select_location_cannot_used_desc'.tr,
+                                style:
+                                    GoogleFonts.poppins(color: Colors.white)));
+                        return;
+                      }
+                      final Location location = Location();
+                      late bool serviceEnabled;
+                      late PermissionStatus permissionGranted;
+                      late LocationData locationData;
+
+                      serviceEnabled = await location.serviceEnabled();
+                      if (!serviceEnabled) {
+                        serviceEnabled = await location.requestService();
+                        if (!serviceEnabled) {
+                          log("Location services is not available");
+                          Get.snackbar("", "",
+                              backgroundColor: Colors.red,
+                              icon: Icon(
+                                MdiIcons.closeCircleOutline,
+                                color: Colors.white,
+                              ),
+                              titleText: Text(
+                                'location_service'.tr,
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              messageText: Text('location_not_available'.tr,
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white)));
+                          return;
+                        }
+                      }
+
+                      permissionGranted = await location.hasPermission();
+                      if (permissionGranted == PermissionStatus.denied) {
+                        permissionGranted = await location.requestPermission();
+                        if (permissionGranted != PermissionStatus.granted) {
+                          log("Location permission is denied");
+                          Get.snackbar("", "",
+                              backgroundColor: Colors.red,
+                              icon: Icon(
+                                MdiIcons.closeCircleOutline,
+                                color: Colors.white,
+                              ),
+                              titleText: Text(
+                                'location_service'.tr,
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              messageText: Text('location_permission_denied'.tr,
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white)));
+                          return;
+                        }
+                      }
+
+                      locationData = await location.getLocation();
+                      final dataParams = {
+                        'latitude': '${locationData.latitude!}',
+                        'longitude': '${locationData.longitude!}',
+                        'isPickLocation': 'true'
+                      };
+                      var result = await Get.rootDelegate
+                          .toNamed('/maps', parameters: dataParams);
+                      setState(() {
+                        pickLocation = result;
+                      });
+                    },
+                    child: Text('pick_location'.tr))
               ],
             ),
             Center(
@@ -186,8 +287,8 @@ class _UploadPostPageState extends State<UploadPostPage> {
 
     final newBytes = await StoryServices.compressImage(bytes);
 
-    var uploadStory =
-        await StoryServices.postImage(newBytes, fileName, descController.text);
+    var uploadStory = await StoryServices.postImage(
+        newBytes, fileName, descController.text, pickLocation!);
 
     if (uploadStory.error!) {
       Get.snackbar("", "",

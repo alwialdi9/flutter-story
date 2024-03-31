@@ -30,11 +30,11 @@ class ImageCubit extends Cubit<ImageState> {
   }
 
   Future<void> uploadImage(
-      List<int> bytes, String fileName, String description) async {
+      List<int> bytes, String fileName, String description, Map<String, double> location) async {
     emit(ImageUploadInitial());
     try {
       ApiReturnValue result =
-          await StoryServices.postImage(bytes, fileName, description);
+          await StoryServices.postImage(bytes, fileName, description, location);
 
       bool? error = result.error;
 

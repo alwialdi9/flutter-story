@@ -14,7 +14,15 @@ class Messages extends Translations {
           'logout': 'Logout',
           'hint_desc': 'Description',
           'btn_gallery': 'Gallery',
-          'btn_camera': 'Camera'
+          'btn_camera': 'Camera',
+          'pick_location': 'Select Location',
+          'detail_loc': 'Detail Location',
+          'location_service': 'Location',
+          'location_not_available': 'Location service not available',
+          'location_permission_denied': 'Location Permission is denied. Please granted location permission for upload post (optional).',
+          'coordinate': 'coordinate',
+          'select_location_cannot_used': 'Select Location cannot be used',
+          'select_location_cannot_used_desc': 'Use Paid app for unlock feature',
         },
         'id_ID': {
           'title': 'Bagikan momen kamu',
@@ -28,7 +36,15 @@ class Messages extends Translations {
           'logout': 'Keluar',
           'hint_desc': 'Deskripsi',
           'btn_gallery': 'Galeri',
-          'btn_camera': 'Kamera'
+          'btn_camera': 'Kamera',
+          'pick_location': 'Pilih Lokasi',
+          'detail_loc': "Detail Lokasi",
+          'location_service': 'Lokasi',
+          'location_not_available': 'Layanan lokasi tidak tersedia',
+          'location_permission_denied': 'Anda menolak izin akses lokasi. Izinkan akses lokasi untuk mengunggah Postingan (Optional).',
+          'coordinate': 'Koordinat',
+          'select_location_cannot_used': 'Pilih lokasi tidak bisa digunakan',
+          'select_location_cannot_used_desc': 'Gunakan aplikasi berbayar untuk menggunakan fitur',
         }
       };
 }

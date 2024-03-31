@@ -1,11 +1,17 @@
 part of 'pages.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends StatefulWidget {
   const DetailPage({super.key});
 
   @override
+  State<DetailPage> createState() => _DetailPageState();
+}
+
+class _DetailPageState extends State<DetailPage> {
+  Story story = Get.rootDelegate.arguments();
+
+  @override
   Widget build(BuildContext context) {
-    final Story story = Get.rootDelegate.arguments();
     return Scaffold(
       body: Stack(
         children: [
@@ -49,7 +55,7 @@ class DetailPage extends StatelessWidget {
                                       fontWeight: FontWeight.w600)),
                               Text(
                                   formatStringDate(story.createdAt,
-                                      'EEE, dd MMMM yyyy h:mm a'),
+                                      'EEEE, dd MMMM yyyy h:mm a'),
                                   style: greyFontStyle)
                             ],
                           )
@@ -90,8 +96,17 @@ class DetailPage extends StatelessWidget {
                           ])),
                   const SizedBox(height: 10),
                   story.lat != null || story.lon != null
-                      ? Text("${story.lat}, ${story.lon}",
-                          style: greyFontStyle.copyWith(fontSize: 12))
+                      ? Center(
+                          child: ElevatedButton(
+                              onPressed: () {
+                                Get.rootDelegate.toNamed('/maps', parameters: {
+                                  'latitude': '${story.lat}',
+                                  'longitude': '${story.lon}',
+                                  'isPickLocation': 'false'
+                                });
+                              },
+                              child: Text('detail_loc'.tr)),
+                        )
                       : const Text('')
                 ],
               ),
